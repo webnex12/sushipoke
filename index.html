@@ -745,6 +745,12 @@
 
     <script>
         (function() {
+            function isWithinWorkingHours() {
+    const now = new Date();
+    const hour = now.getHours(); // 0–23
+
+    return hour >= 14 && hour < 23; // 2 PM → 11 PM
+}
         /*function parseCSV(text) {
     const rows = [];
     let current = '';
@@ -792,6 +798,17 @@
             const drawerOverlay = document.getElementById('drawerOverlay');
             const clearCartBtn = document.getElementById('clearCartBtn');
             const whatsappBtn = document.getElementById('whatsappOrderBtn');
+            function updateOrderButtonState() {
+    if (!isWithinWorkingHours()) {
+        whatsappBtn.disabled = true;
+        whatsappBtn.style.opacity = "0.5";
+        whatsappBtn.innerHTML = '<i class="fab fa-whatsapp"></i> We are currently closed. Orders are accepted from 2 PM to 11 PM';
+    } else {
+        whatsappBtn.disabled = false;
+        whatsappBtn.style.opacity = "1";
+        whatsappBtn.innerHTML = '<i class="fab fa-whatsapp"></i> WhatsApp order';
+    }
+}
             
             // Modal elements
             const customerModal = document.getElementById('customerModal');
@@ -1107,6 +1124,7 @@
             });
 
             loadFromSheet();
+            updateOrderButtonState();
         })();
     </script>
     <!-- Replace SHEET_CSV_URL with your published Google Sheet CSV link.
